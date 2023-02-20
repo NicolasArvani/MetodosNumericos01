@@ -20,10 +20,30 @@ namespace MetodosNumericos01
     public class Funcao
     {
         List<char> FuncaoList;
-        List<char> VariavelList;
         List<int> Constantes = new List<int>();
         List<int> Elevados = new List<int>();
-        
+
+
+        /*
+        Lógica aplicada utilizando o seguinte conceito:
+
+        C[0]*x^E[0] + C[1]*x^E[1] + ... + C[n]*x^E[n];
+        Onde: C = List<int> Constantes, E = List<int> Elevados 
+
+        Exemplo:
+        A funçao x^3 + x^2 - 9x + 5 = 0 deverá ser inserida como string da seguinte forma:
+        x^3+x^2-9x+5;
+
+        Será interpretado assim:
+
+        1*x^3 + 1*x^2 - 9*x^1 + 5*x^0;
+        As listas ficarao:
+        Constantes: 1, 1, -9, 5;
+        Elevados: 3, 2, 1, 0;
+         
+         */
+
+
 
         public Funcao(string funcaoString)
         {
@@ -35,39 +55,39 @@ namespace MetodosNumericos01
             bool negative = false;
             for (int i = 0; i < FuncaoList.Count; i++)
             {
-                if (isNumber(FuncaoList[i]))
+                if (isNumber(FuncaoList[i])) //Verifica se é um numero, caso seja, coloca a bool num = true e adiciona o char na lista de numeros para depois converter em int
                 {
                     num = true;
                     number.Add(FuncaoList[i]);
                 }
-                else if (FuncaoList[i] == 'x')
+                else if (FuncaoList[i] == 'x') //se for x, entao ja temos os numeros na lista
                 {
-                    if (num)
+                    if (num) //caso haja numeros na lista de char, converte para int
                     {
                         String s = new String(number.ToArray());
                         Console.WriteLine("Convertendo: " + s);
                         int n = Convert.ToInt32(s);
-                        if (negative)
+                        if (negative) //se for negativo, apenas multiplica por -1
                         {
                             n *= -1;
                             negative = false;
                         }
-                        Constantes.Add(n);
-                        number.Clear();
-                        num = false;
+                        Constantes.Add(n); //adiciona na lista de constantes
+                        number.Clear(); //limpa a lista de chars para reutilizar
+                        num = false; //reseta a variavel controle
                     }
                     else
                     {
-                        Constantes.Add(1);
+                        Constantes.Add(1); //caso nao haja numeros na lista, entao o x esta sendo multiplicando por 1
                     }
                 }
-                else if (FuncaoList[i] == '^')
+                else if (FuncaoList[i] == '^') //variavel de controle de elevado eh ativada
                 {
                     elevado = true;
                 }
-                else if (FuncaoList[i] == '-' || FuncaoList[i] == '+')
+                else if (FuncaoList[i] == '-' || FuncaoList[i] == '+') //se for mais ou menos, o bloco de x acabou, portanto podemos elevar o numero
                 {
-                    if (elevado)
+                    if (elevado) //se houve sinal de elevado, converte o numero da lista para int e adiciona  na lista de Elevados
                     {
                         String s = new String(number.ToArray());
                         Console.WriteLine("Convertendo: " + s);
@@ -82,16 +102,16 @@ namespace MetodosNumericos01
                         elevado = false;
                         num = false;
                     }
-                    else
+                    else //caso a variavel controle de elevado esteja falsa, entao o x eh elevado a 1
                     {
                         Elevados.Add(1);
                     }
-                    if (FuncaoList[i] == '-')
+                    if (FuncaoList[i] == '-')//caso seja -, o proximo numero sera multiplicado por -1 la em cima
                     {
                         negative = true;
                     }
                 }
-                else if (FuncaoList[i] == ';')
+                else if (FuncaoList[i] == ';') //sinal de finalizacao da funcao, portanto o x sera elevado a 0
                 {
                     String s = new String(number.ToArray());
                     Console.WriteLine("Convertendo: " + s);
@@ -178,10 +198,6 @@ namespace MetodosNumericos01
             }
             Console.WriteLine();
         }
-
-
-
-        
 
         private bool isNumber(char c)
         {
