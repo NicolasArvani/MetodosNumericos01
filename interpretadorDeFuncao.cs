@@ -65,7 +65,7 @@ namespace MetodosNumericos01
                     if (num) //caso haja numeros na lista de char, converte para int
                     {
                         String s = new String(number.ToArray());
-                        Console.WriteLine("Convertendo: " + s);
+                        //Console.WriteLine("Convertendo: " + s);
                         int n = Convert.ToInt32(s);
                         if (negative) //se for negativo, apenas multiplica por -1
                         {
@@ -78,7 +78,16 @@ namespace MetodosNumericos01
                     }
                     else
                     {
-                        Constantes.Add(1); //caso nao haja numeros na lista, entao o x esta sendo multiplicando por 1
+                        //caso nao haja numeros na lista, entao o x esta sendo multiplicando por 1 ou -1
+                        if (negative)
+                        {
+                            Constantes.Add(-1);
+                            negative = false;
+                        }
+                        else
+                        {
+                            Constantes.Add(1);
+                        }
                     }
                 }
                 else if (FuncaoList[i] == '^') //variavel de controle de elevado eh ativada
@@ -90,7 +99,7 @@ namespace MetodosNumericos01
                     if (elevado) //se houve sinal de elevado, converte o numero da lista para int e adiciona  na lista de Elevados
                     {
                         String s = new String(number.ToArray());
-                        Console.WriteLine("Convertendo: " + s);
+                        //Console.WriteLine("Convertendo: " + s);
                         int n = Convert.ToInt32(s);
                         if (negative)
                         {
@@ -113,18 +122,21 @@ namespace MetodosNumericos01
                 }
                 else if (FuncaoList[i] == ';') //sinal de finalizacao da funcao, portanto o x sera elevado a 0
                 {
-                    String s = new String(number.ToArray());
-                    Console.WriteLine("Convertendo: " + s);
-                    int n = Convert.ToInt32(s);
-                    if (negative)
+                    if (num)
                     {
-                        n *= -1;                        
-                       negative = false;
+                        String s = new String(number.ToArray());
+                        //Console.WriteLine("Convertendo: " + s);
+                        int n = Convert.ToInt32(s);
+                        if (negative)
+                        {
+                            n *= -1;                        
+                           negative = false;
+                        }
+                        Constantes.Add(n);
+                        Elevados.Add(0);
+                        number.Clear();
+                        break;                    
                     }
-                    Constantes.Add(n);
-                    Elevados.Add(0);
-                    number.Clear();
-                    break;                    
                 }
                 else if (!isAcceptable(FuncaoList[i]))
                 {

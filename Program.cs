@@ -4,9 +4,9 @@
     {
         static void Main(string[] args)
         {
-            
+
             //       ---> Programa Main está sendo utilizado para teste das classes por enquanto <---
-            
+
 
             /* Codigo Teste para classe Funcao
             Funcao f = new Funcao("x^3-9x+5;");
@@ -32,12 +32,20 @@
             } while (Console.ReadLine() == "s");
         */
 
-            //Codigo teste para classe ConversorBase
+            /* Codigo teste para classe ConversorBase
             ConversorBase a = new ConversorBase(5, 3);
             Console.WriteLine("Base 5 -> Base 3: " + a.converterB1B2(230));
             Console.WriteLine("Base 3 -> Base 5: " + a.converterB2B1(2102));
             a.setBase1(10);
             Console.WriteLine("Valor na base 10: " + a.converterB2B1(2102));
+            */
+
+            SomaDeRiemann sr = new SomaDeRiemann("x^4 -x^2 + 1;");
+            sr.setInicio(0);
+            sr.setFim(2);
+            Console.WriteLine("Area c/ 5 divisoes: " + sr.calcArea(5).ToString("N8"));
+            Console.WriteLine("Area c/ 50 divisoes: " + sr.calcArea(50).ToString("N8"));
+            Console.WriteLine("Area c/ 500 divisoes: " + sr.calcArea(500).ToString("N8"));
 
 
         }
