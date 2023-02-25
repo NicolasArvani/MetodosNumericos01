@@ -19,9 +19,9 @@ namespace MetodosNumericos01
 
     public class Funcao
     {
-        List<char> FuncaoList;
-        List<int> Constantes = new List<int>();
-        List<int> Elevados = new List<int>();
+        private List<char> FuncaoList;
+        private List<int> Constantes = new List<int>();
+        private List<int> Elevados = new List<int>();
 
 
         /*
@@ -216,8 +216,6 @@ namespace MetodosNumericos01
 
             return acceptable.Contains(c);
         }
-
-
 
     }
 

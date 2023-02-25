@@ -4,18 +4,40 @@
     {
         static void Main(string[] args)
         {
-            //Funcao f = new Funcao("x^3-9x+5;");
-            //f.printDebug();
-            //f.printFuncao();
-            //Console.WriteLine("\r\nx=2:" + f.calculaY(2).ToString());
+            
+            //       ---> Programa Main está sendo utilizado para teste das classes por enquanto <---
+            
 
-            Bissecao bi = new Bissecao();
+            /* Codigo Teste para classe Funcao
+            Funcao f = new Funcao("x^3-9x+5;");
+            f.printDebug();
+            f.printFuncao();
+            Console.WriteLine("\r\nx=2:" + f.calculaY(2).ToString());
+            */
 
-            bi.setFuncao("x^3+x^2-9x+5;");
-            bi.setInicio(2);
-            bi.setFim(4);
-            Double erro = 0.0001;
-            Console.WriteLine("Raiz: " + bi.calcRaiz(erro).ToString() + "\r\nErro: " + erro.ToString());
+            /* Codigo teste para classe Bissecao
+            do {
+                Console.WriteLine("Digite a função:");
+                String s = Console.ReadLine();
+                Console.WriteLine("Digite o intervalo inicial:");
+                double i = Convert.ToDouble(Console.ReadLine());
+                Console.WriteLine("Digite o intervalo final:");
+                double f = Convert.ToDouble(Console.ReadLine());
+                Console.WriteLine("Digite a precisão:");
+                double e = Convert.ToDouble(Console.ReadLine());
+
+                Bissecao b = new Bissecao(s, i, f);
+                Console.WriteLine("Raiz: " + b.calcRaiz(e).ToString("N8"));
+                Console.WriteLine("Deseja continuar? (s/n)");
+            } while (Console.ReadLine() == "s");
+        */
+
+            //Codigo teste para classe ConversorBase
+            ConversorBase a = new ConversorBase(5, 3);
+            Console.WriteLine("Base 5 -> Base 3: " + a.converterB1B2(230));
+            Console.WriteLine("Base 3 -> Base 5: " + a.converterB2B1(2102));
+            a.setBase1(10);
+            Console.WriteLine("Valor na base 10: " + a.converterB2B1(2102));
 
 
         }
