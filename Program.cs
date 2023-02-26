@@ -40,12 +40,16 @@
             Console.WriteLine("Valor na base 10: " + a.converterB2B1(2102));
             */
 
-            SomaDeRiemann sr = new SomaDeRiemann("x^4 -x^2 + 1;");
+            SomaDeRiemann sr = new SomaDeRiemann(";");
             sr.setInicio(0);
             sr.setFim(2);
+            
             Console.WriteLine("Area c/ 5 divisoes: " + sr.calcArea(5).ToString("N8"));
             Console.WriteLine("Area c/ 50 divisoes: " + sr.calcArea(50).ToString("N8"));
             Console.WriteLine("Area c/ 500 divisoes: " + sr.calcArea(500).ToString("N8"));
+
+            //Bissecao b = new Bissecao(";", 0, 2);
+            //Console.WriteLine("Raiz: " + b.calcRaiz(0.00001).ToString("N8"));
 
 
         }

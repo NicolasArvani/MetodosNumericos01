@@ -47,130 +47,167 @@ namespace MetodosNumericos01
 
         public Funcao(string funcaoString)
         {
+            
             this.FuncaoList = funcaoString.ToList<char>();
             List<char> number = new List<char>();
+            interpretador(this.FuncaoList);
+        }
 
-            bool elevado = false;
-            bool num = false;
-            bool negative = false;
-            for (int i = 0; i < FuncaoList.Count; i++)
+        public void setFuncao(String funcao)
+        {
+            this.FuncaoList = funcao.ToList<char>();
+            interpretador(this.FuncaoList);
+        }
+
+
+        /*------------------ Métodos para interpretação ------------------*/
+
+
+        private void interpretador(List<char> Funcao) //v3 do interpretador
+        {
+            for(int i = 0; i < Funcao.Count(); i++) //verifica se tem algum caracter invalido
             {
-                if (isNumber(FuncaoList[i])) //Verifica se é um numero, caso seja, coloca a bool num = true e adiciona o char na lista de numeros para depois converter em int
+                if (!isAcceptable(Funcao[i]) && !isNumber(Funcao[i]))
                 {
-                    num = true;
-                    number.Add(FuncaoList[i]);
+                    throw new Exception("Função com Formato ou Caracteres Inválidos: " + Funcao[i]);
                 }
-                else if (FuncaoList[i] == 'x') //se for x, entao ja temos os numeros na lista
+            }
+            
+            this.Constantes.Clear();
+            this.Elevados.Clear();
+
+
+            //logica utilizada de acordo com o fluxograma
+            //https://i.imgur.com/bjOxjSY.png
+
+            List<char> numChar = new List<char>();
+            bool num = false;
+            bool elevado = false;
+            bool neg = false;
+            bool x = false;
+
+            for (int i = 0; i < Funcao.Count(); i++)
+            {
+                if (isNumber(Funcao[i]))
                 {
-                    if (num) //caso haja numeros na lista de char, converte para int
+                    numChar.Add(Funcao[i]);
+                    num = true;
+                }
+                else if (Funcao[i] == 'x')
+                {
+                    x = true;
+                    if (num)
                     {
-                        String s = new String(number.ToArray());
-                        //Console.WriteLine("Convertendo: " + s);
-                        int n = Convert.ToInt32(s);
-                        if (negative) //se for negativo, apenas multiplica por -1
-                        {
-                            n *= -1;
-                            negative = false;
-                        }
-                        Constantes.Add(n); //adiciona na lista de constantes
-                        number.Clear(); //limpa a lista de chars para reutilizar
-                        num = false; //reseta a variavel controle
+                        this.Constantes.Add(numCharToInt(ref numChar, ref neg));
+                        num = false;
                     }
                     else
                     {
-                        //caso nao haja numeros na lista, entao o x esta sendo multiplicando por 1 ou -1
-                        if (negative)
+                        int n = 1;
+                        if (neg)
                         {
-                            Constantes.Add(-1);
-                            negative = false;
+                            n *= -1;
+                            neg = false;
                         }
-                        else
-                        {
-                            Constantes.Add(1);
-                        }
+                        this.Constantes.Add(n);
+                        
                     }
                 }
-                else if (FuncaoList[i] == '^') //variavel de controle de elevado eh ativada
+                else if (Funcao[i] == '^')
                 {
                     elevado = true;
                 }
-                else if (FuncaoList[i] == '-' || FuncaoList[i] == '+') //se for mais ou menos, o bloco de x acabou, portanto podemos elevar o numero
+                else if (Funcao[i] == '+' || Funcao[i] == '-' || Funcao[i] == ';')
                 {
-                    if (elevado) //se houve sinal de elevado, converte o numero da lista para int e adiciona  na lista de Elevados
+                    if (x)
                     {
-                        String s = new String(number.ToArray());
-                        //Console.WriteLine("Convertendo: " + s);
-                        int n = Convert.ToInt32(s);
-                        if (negative)
+                        if (elevado)
                         {
-                            n *= -1;
-                            negative = false;
+                            this.Elevados.Add(numCharToInt(ref numChar, ref neg));
+                            elevado = false;
+                            num = false;
                         }
-                        Elevados.Add(n);
-                        number.Clear();
-                        elevado = false;
-                        num = false;
-                    }
-                    else //caso a variavel controle de elevado esteja falsa, entao o x eh elevado a 1
-                    {
-                        Elevados.Add(1);
-                    }
-                    if (FuncaoList[i] == '-')//caso seja -, o proximo numero sera multiplicado por -1 la em cima
-                    {
-                        negative = true;
-                    }
-                }
-                else if (FuncaoList[i] == ';') //sinal de finalizacao da funcao, portanto o x sera elevado a 0
-                {
-                    if (num)
-                    {
-                        String s = new String(number.ToArray());
-                        //Console.WriteLine("Convertendo: " + s);
-                        int n = Convert.ToInt32(s);
-                        if (negative)
+                        else
                         {
-                            n *= -1;                        
-                           negative = false;
+                            this.Elevados.Add(1);
                         }
-                        Constantes.Add(n);
-                        Elevados.Add(0);
-                        number.Clear();
-                        break;                    
+                        x = false;
+                    }
+                    else
+                    {
+                        if (num)
+                        {
+                            this.Constantes.Add(numCharToInt(ref numChar, ref neg));
+                            this.Elevados.Add(0);
+                            num = false;
+                        }
+                    }
+                    if (Funcao[i] == '-')
+                    {
+                        neg = true;
                     }
                 }
-                else if (!isAcceptable(FuncaoList[i]))
-                {
-                    throw new Exception("Função com Formato ou Caracteres Inválidos");
-                }
-            }   
+            }
+        }
+
+        private int numCharToInt(ref List<char> numChar, ref bool neg)
+        {
+            String s = new String(numChar.ToArray());
+            int n = Convert.ToInt32(s);
+            if (neg)
+            {
+                n *= -1;
+                neg = false;            
+            }
+            numChar.Clear();
+            return n;
+        }
+
+        private bool isNumber(char c)
+        {
+            return (c >= 48 && c <= 57);
+        }
+
+        private bool isAcceptable(char c)
+        {
+            char[] acceptable = new char[] {
+                '+',
+                '-',
+                'x',
+                ';',
+                ' ',
+                '*',
+                '^'
+            };
+
+            return acceptable.Contains(c);
         }
 
 
-        public double calculaY(int x)
+        /*------------- Calculo do f(x) ---------------*/
+
+        public double calculaY(object X)
         {
-            double y=0;
-
-            for(int i = 0; i < Constantes.Count(); i++)
+            if(this.Constantes.Any() && this.Elevados.Any())
             {
-                y += (Constantes[i] * (Math.Pow(x, Elevados[i])));
-            }
+                double x = Convert.ToDouble(X);
+                double y = 0;
 
-            return y;
+                for (int i = 0; i < Constantes.Count(); i++)
+                {
+                    y += (Constantes[i] * (Math.Pow(x, Elevados[i])));
+                }
+                return y;
+            }
+            else //se a funcao for vazia, retorna NaN
+            {
+                return double.NaN;
+            }
         }
         
-        public double calculaY(double x)
-        {
-            double y=0;
-
-            for(int i = 0; i < Constantes.Count(); i++)
-            {
-                y += (Constantes[i] * (Math.Pow(x, Elevados[i])));
-            }
-
-            return y;
-        }
 
 
+        /*------------- Funcoes de Debug ---------------*/
 
         public void printDebug()
         {
@@ -211,23 +248,7 @@ namespace MetodosNumericos01
             Console.WriteLine();
         }
 
-        private bool isNumber(char c)
-        {
-            return (c >= 48 && c <= 57);
-        }
-
-        private bool isAcceptable(char c)
-        {
-            char[] acceptable = new char[] {
-                '+',
-                '-',
-                'x',
-                ';',
-                ' '
-            };
-
-            return acceptable.Contains(c);
-        }
+        
 
     }
 
