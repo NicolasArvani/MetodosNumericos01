@@ -9,45 +9,46 @@ namespace MetodosNumericos01
 {
     internal class Bissecao
     {
-        private double inicio;
-        private double fim;
+        private double a;
+        private double b;
         private Funcao funcao;
+        private int qtdIteracoes;
 
         public Bissecao(String s, double i, double f)
         {
             this.funcao = new Funcao(s);
-            this.inicio = i;
-            this.fim = f;
+            this.a = i;
+            this.b = f;
         }
 
-        public Bissecao() { } //construtor vazio
+        public Bissecao() { } 
 
 
         public void setFuncao(String s) { this.funcao = new Funcao(s); }
-        public void setInicio(double i) { this.inicio = i; }
-        public void setFim(double f) { this.fim = f; }
+        public void setA(double i) { this.a = i; }
+        public void setB(double f) { this.b = f; }
         public void getFuncao() { this.funcao.printFuncao(); }
-        public double getInicio() { return this.inicio; }
-        public double getFim() { return this.fim; }
+        public double getA() { return this.a; }
+        public double getB() { return this.b; }
+        public int getQtdIteracoes() { return this.qtdIteracoes; }
 
 
         public double calcRaiz(double e)
         {
-            double i = this.inicio;
-            double f = this.fim;
+            this.qtdIteracoes = 0;
+            double i = this.a;
+            double f = this.b;
             double k = (i + f) / 2;
 
             while (Math.Abs(f - i) > e)
             {
                 if (calcF(i) * calcF(k) < 0)
-                {
                     f = k;
-                }
                 else
-                {
                     i = k;
-                }
+                
                 k = (i + f) / 2;
+                this.qtdIteracoes++;
             }
             return k;
         }
