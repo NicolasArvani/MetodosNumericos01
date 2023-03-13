@@ -6,17 +6,6 @@ using System.Threading.Tasks;
 
 namespace MetodosNumericos01
 {
-    internal class interpretadorDeFuncao
-    {
-        string funcaoTexto;
-
-        public interpretadorDeFuncao(string funcaoTexto)
-        {
-            this.funcaoTexto = funcaoTexto;
-        }
-
-    }
-
     public class Funcao
     {
         private List<char> FuncaoList;
@@ -47,10 +36,16 @@ namespace MetodosNumericos01
 
         public Funcao(string funcaoString)
         {
-            
+
             this.FuncaoList = funcaoString.ToList<char>();
             List<char> number = new List<char>();
             interpretador(this.FuncaoList);
+        }
+
+        public Funcao(List<int> c, List<int> e)
+        {
+            this.Constantes = c;
+            this.Elevados = e;
         }
 
         public void setFuncao(String funcao)
@@ -65,14 +60,14 @@ namespace MetodosNumericos01
 
         private void interpretador(List<char> Funcao) //v3 do interpretador
         {
-            for(int i = 0; i < Funcao.Count(); i++) //verifica se tem algum caracter invalido
+            for (int i = 0; i < Funcao.Count(); i++) //verifica se tem algum caracter invalido
             {
                 if (!isAcceptable(Funcao[i]) && !isNumber(Funcao[i]))
                 {
                     throw new Exception("Função com Formato ou Caracteres Inválidos: " + Funcao[i]);
                 }
             }
-            
+
             this.Constantes.Clear();
             this.Elevados.Clear();
 
@@ -110,7 +105,7 @@ namespace MetodosNumericos01
                             neg = false;
                         }
                         this.Constantes.Add(n);
-                        
+
                     }
                 }
                 else if (Funcao[i] == '^')
@@ -157,7 +152,7 @@ namespace MetodosNumericos01
             if (neg)
             {
                 n *= -1;
-                neg = false;            
+                neg = false;
             }
             numChar.Clear();
             return n;
@@ -188,7 +183,7 @@ namespace MetodosNumericos01
 
         public double calculaY(object X)
         {
-            if(this.Constantes.Any() && this.Elevados.Any())
+            if (this.Constantes.Any() && this.Elevados.Any())
             {
                 double x = Convert.ToDouble(X);
                 double y = 0;
@@ -204,10 +199,40 @@ namespace MetodosNumericos01
                 return double.NaN;
             }
         }
-        
 
 
-        /*------------- Funcoes de Debug ---------------*/
+        public static double calculaY(String funcao, object x) //calculo de f(x) estatico
+        {
+            Funcao f = new Funcao(funcao);
+            return f.calculaY(x);
+        }
+
+        /*------------- Derivada ---------------*/
+
+        public Funcao derivarFuncao()
+        {
+            List<int> newConst = new List<int>();
+            List<int> newElev = new List<int>();
+            //(x^n)' = n*x^n-1;
+            for (int i = 0; i < this.Constantes.Count(); i++)
+            {
+                if (this.Elevados[i] != 0)
+                {
+                    newConst.Add(this.Elevados[i] * this.Constantes[i]);
+                    newElev.Add(this.Elevados[i] - 1);
+                }
+            }
+            return new Funcao(newConst, newElev);
+        }
+
+        public static Funcao derivarFuncao(String f)
+        {
+            return new Funcao(f).derivarFuncao();
+        }
+
+
+
+        /*------------- Funcoes diversas ---------------*/
 
         public void printDebug()
         {
@@ -216,8 +241,6 @@ namespace MetodosNumericos01
             printIntList(Constantes);
             Console.Write("Elevados: ");
             printIntList(Elevados);
-
-
         }
 
         public void printFuncao()
@@ -228,14 +251,39 @@ namespace MetodosNumericos01
                 {
                     Console.Write("+");
                 }
-                Console.Write(Constantes[i] + "*x^" + Elevados[i]);
+                if (Elevados[i] == 1)
+                    Console.Write(Constantes[i] + "*x");
+                else if (Elevados[i] != 0)
+                    Console.Write(Constantes[i] + "*x^" + Elevados[i]);
+                else
+                    Console.Write(Constantes[i]);
             }
+            Console.Write("\n");
+        }
+
+        public String getStringFuncao()
+        {
+            String result = "";
+            for (int i = 0; i < Elevados.Count(); i++)
+            {
+                if (i != 0 && Constantes[i] >= 0)
+                {
+                    result += "+";
+                }
+                if (Elevados[i] == 1)
+                    result += Constantes[i].ToString() + "*x";
+                else if (Elevados[i] != 0)
+                    result += Constantes[i].ToString() + "*x^" + Elevados[i].ToString();
+                else
+                    result += Constantes[i].ToString();
+            }
+            result += ";";
+            return result;
         }
 
         private String listToString(List<char> l)
         {
-            String s = new String(l.ToArray());
-            return s;
+            return new String(l.ToArray());
         }
         
         private void printIntList(List<int> l)
@@ -247,6 +295,8 @@ namespace MetodosNumericos01
             }
             Console.WriteLine();
         }
+
+        
 
         
 

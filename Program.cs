@@ -56,15 +56,34 @@ namespace MetodosNumericos01
 
             FalsaPosicao fp = new FalsaPosicao();
             Bissecao bi = new Bissecao();
-            fp.setFuncao("x^3-9x+5;");
-            fp.setA(0);
-            fp.setB(2);
-            bi.setFuncao("x^3-9x+5;");
-            bi.setA(0);
-            bi.setB(2);
+            Secante se = new Secante();
+            Newton ne = new Newton();
+            
+            
+            Funcao f = new Funcao("x^3-9x+5;");
+            fp.funcao = bi.funcao = se.funcao = ne.funcao = f;
+            fp.a = bi.a = se.a = ne.a = 0;
+            fp.b = bi.b = se.b = ne.b = 2;
+            
+            double precisao = 0.0000001;
 
-            Console.WriteLine("[Falsa Posicao] Raiz: " + fp.calcRaiz(0.000001).ToString("N8") + " com precisao de 0,000001, com total de " + fp.getQtdIteracoes() +" iteracoes");
-            Console.WriteLine("[Bissecao] Raiz: " + bi.calcRaiz(0.000001).ToString("N8") + " com precisao de 0,000001, com total de " + bi.getQtdIteracoes() + " iteracoes");
+
+            Console.WriteLine("[Falsa Posicao] Raiz: " + fp.calcRaiz(precisao).ToString("N8") + " com precisao de " + precisao + ", com total de " + fp.qtdIteracoes + " iteracoes");
+            Console.WriteLine("[Bissecao] Raiz: " + bi.calcRaiz(precisao).ToString("N8") + " com precisao de " + precisao + ", com total de " + bi.qtdIteracoes + " iteracoes");
+            Console.WriteLine("[Secante] Raiz: " + se.calcRaiz(precisao).ToString("N8") + " com precisao de " + precisao + ", com total de " + se.qtdIteracoes + " iteracoes");
+            Console.WriteLine("[Newton] Raiz: " + ne.calcRaiz(precisao).ToString("N8") + " com precisao de " + precisao + ", com total de " + ne.qtdIteracoes + " iteracoes");
+
+            //Funcao f = new Funcao("3x^2+2x+5;");
+
+            //Funcao fd = f.derivarFuncao();
+
+            //Console.WriteLine("Funcao original: " + f.getStringFuncao());
+            //Console.WriteLine("Funcao derivada: " + fd.getStringFuncao());
+
+
+
+
+
 
         }
     }

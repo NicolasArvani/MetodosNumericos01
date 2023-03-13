@@ -7,33 +7,21 @@ using System.Threading.Tasks;
 
 namespace MetodosNumericos01
 {
-    internal class Bissecao
+    internal class Bissecao : ZerosFuncao
     {
-        private double a;
-        private double b;
-        private Funcao funcao;
-        private int qtdIteracoes;
-
-        public Bissecao(String s, double i, double f)
+        public Bissecao(String s, double i, double f) : base(s, i, f)
         {
-            this.funcao = new Funcao(s);
-            this.a = i;
-            this.b = f;
+
+        }
+        public Bissecao(Funcao s, double i, double f) : base(s, i, f)
+        {
+
         }
 
         public Bissecao() { } 
 
-
-        public void setFuncao(String s) { this.funcao = new Funcao(s); }
-        public void setA(double i) { this.a = i; }
-        public void setB(double f) { this.b = f; }
-        public void getFuncao() { this.funcao.printFuncao(); }
-        public double getA() { return this.a; }
-        public double getB() { return this.b; }
-        public int getQtdIteracoes() { return this.qtdIteracoes; }
-
-
-        public double calcRaiz(double e)
+    
+        public override double calcRaiz(double e)
         {
             this.qtdIteracoes = 0;
             double i = this.a;
@@ -42,7 +30,7 @@ namespace MetodosNumericos01
 
             while (Math.Abs(f - i) > e)
             {
-                if (calcF(i) * calcF(k) < 0)
+                if (F(i) * F(k) < 0)
                     f = k;
                 else
                     i = k;
@@ -50,13 +38,11 @@ namespace MetodosNumericos01
                 k = (i + f) / 2;
                 this.qtdIteracoes++;
             }
+            this.raiz = k;
             return k;
         }
 
-        private double calcF(double x)
-        {
-            return funcao.calculaY(x);
-        }
+
     }
 
     
