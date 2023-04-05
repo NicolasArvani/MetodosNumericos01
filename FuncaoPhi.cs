@@ -50,7 +50,6 @@ namespace MetodosNumericos01
         public void printPhi()
         {
             Console.WriteLine("Phi: " + this.phi.getStringFuncao());
-            this.phi.printDebug();
             Console.WriteLine("Divisor: " + this.divisor + " | Expoente: " + this.expoente);
         }
 
