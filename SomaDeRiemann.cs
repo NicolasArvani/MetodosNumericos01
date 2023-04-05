@@ -8,9 +8,9 @@ namespace MetodosNumericos01
 {
     internal class SomaDeRiemann
     {
-        private Funcao funcao;
-        private double inicio;
-        private double fim;
+        private Funcao funcao { get; set; }
+        private double inicio { get; set; }
+        private double fim { get; set; }
 
 
         public SomaDeRiemann(String funcao, double inicio, double fim)
@@ -24,13 +24,6 @@ namespace MetodosNumericos01
         {
             this.funcao = new Funcao(funcao);
         }
-        
-        public void setFuncao(String Funcao) { this.funcao = new Funcao(Funcao); }
-        public void setInicio(double inicio) { this.inicio = inicio; }
-        public void setFim(double fim) { this.fim = fim; }
-
-        public void getFuncao() { this.funcao.printFuncao(); }
-
 
         public double calcArea(int divisoes)
         {

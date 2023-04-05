@@ -9,8 +9,8 @@ namespace MetodosNumericos01
     public class Funcao
     {
         private List<char> FuncaoList;
-        private List<int> Constantes = new List<int>();
-        private List<int> Elevados = new List<int>();
+        public List<int> Constantes { get; private set; } = new List<int>();
+        public List<int> Elevados { get; private set; } = new List<int>();
 
 
         /*
@@ -30,7 +30,7 @@ namespace MetodosNumericos01
         Constantes: 1, 1, -9, 5;
         Elevados: 3, 2, 1, 0;
          
-         */
+        */
 
 
 
@@ -46,6 +46,11 @@ namespace MetodosNumericos01
         {
             this.Constantes = c;
             this.Elevados = e;
+        }
+
+        public Funcao()
+        {
+            
         }
 
         public void setFuncao(String funcao)
@@ -231,7 +236,7 @@ namespace MetodosNumericos01
         }
 
 
-
+        
         /*------------- Funcoes diversas ---------------*/
 
         public void printDebug()
@@ -302,4 +307,5 @@ namespace MetodosNumericos01
 
     }
 
+    
 }
