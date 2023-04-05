@@ -23,14 +23,13 @@ namespace MetodosNumericos01
             double[,] a = {
                             {3,2,4,1 },
                             {1,1,2,2},
-                            {4,3,-2,3}
-                            
+                            {4,3,-2,3}  
             };
 
-
+            
             EliminacaoGauss e = new EliminacaoGauss(a);
             double[,] res = e.resolver();
-            EliminacaoGauss.printMatrix(res);
+            Gauss.printMatrix(res);
             
         }
     }
