@@ -6,35 +6,23 @@ namespace MetodosNumericos01
     {
         static void Main(string[] args)
         {
-            
-            /*
-            PontoFixo pf = new PontoFixo("x^3-9x+5;", 0.5, 1);
-            Funcao f = new Funcao("x^3-9x+5;");
-            double res = pf.calcRaiz(0.001);
-            Console.WriteLine(res);
-            Console.WriteLine("F(x) = " + f.calculaY(res));
-            */
 
-            /*
-             
-             Metodo main apenas para testes
-             
-             */
-            double[,] a = {
-                            {3,2,4,1 },
-                            {1,1,2,2},
-                            {4,3,-2,3}  
-            };
+            //teste do interpolador de lagrange
+            double[] x = { -1, 0, 1, 2 };
+            double[] y = { -2, 1, 4, 3 };
+            InterpolacaoLinearLagrange interpoladorLagrange = new InterpolacaoLinearLagrange(x, y);
+            InterpolacaoLinearNewton interpoladorNewton = new InterpolacaoLinearNewton(x, y);
 
-            
-            EliminacaoGauss e = new EliminacaoGauss(a);
-            double[,] res = e.resolver();
-            Gauss.printMatrix(res);
-            
+            //teste com valor 1
+            interpoladorLagrange.print();
+            Console.WriteLine("y(1) = " + interpoladorLagrange.calcY(1));
+            interpoladorNewton.print();
+            Console.WriteLine("y(1) = " + interpoladorNewton.calcY(1));
+
         }
     }
 
 
 
-    
+
 }
